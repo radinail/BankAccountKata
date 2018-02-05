@@ -37,7 +37,7 @@ public class BankAccountDaoTest {
 	
 		BankAccount account = bankAccounts.get("FR122349"); 
 		
-		accountDao.deposit(10000, "FR122349", bankAccounts);
+		accountDao.deposit(10000, account);
 		
 		Assert.assertEquals(20000, account.getBalance(), 0.0);
 		
@@ -47,7 +47,9 @@ public class BankAccountDaoTest {
 	
 		try {
 			
-			accountDao.deposit(-1000, "FR122349", bankAccounts);
+			BankAccount account = bankAccounts.get("FR122349"); 
+			
+			accountDao.deposit(-1000, account);
 			
 		}catch(IllegalArgumentException e){
 			Assert.assertEquals(e.getMessage(), "The amount must be greater than zero");
@@ -62,7 +64,7 @@ public class BankAccountDaoTest {
 		
 		  BankAccount account = bankAccounts.get("FR001234"); 
 		
-		  accountDao.withdraw(500, "FR001234", bankAccounts);
+		  accountDao.withdraw(500, account);
 		
 		  Assert.assertEquals(500, account.getBalance(), 0.0); 
 	} 
@@ -70,8 +72,8 @@ public class BankAccountDaoTest {
 	@Test
 	public void should_return_exception_when_amount_is_less_than_or_equal_zero() {
 	  try {
-			
-			accountDao.withdraw(-1000, "FR001234", bankAccounts);
+		  BankAccount account = bankAccounts.get("FR001234"); 
+			accountDao.withdraw(-1000, account);
 			
 		}catch(IllegalArgumentException e){
 			Assert.assertEquals(e.getMessage(), "The amount must be greater than zero");
@@ -82,8 +84,8 @@ public class BankAccountDaoTest {
 	public void should_throw_exception_when_amount_is_greater_than_balance() {
 		
 		try {
-				
-				accountDao.withdraw(2000, "FR001234", bankAccounts);
+			  BankAccount account = bankAccounts.get("FR001234"); 
+				accountDao.withdraw(2000, account);
 				
 		}catch(IllegalArgumentException e){
 				Assert.assertEquals(e.getMessage(), "The amount is greater than the balance");

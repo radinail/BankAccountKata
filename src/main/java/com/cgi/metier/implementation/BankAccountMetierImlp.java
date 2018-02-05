@@ -17,49 +17,48 @@ public class BankAccountMetierImlp implements BankAccountMetier {
 	/**
 	 * method that allows  to make a deposit of money 
 	 * @param amount
-	 * @param accountNumber
-	 * @param bankAccounts represents all bank accounts
+	 * @param account
 	 **/
-	public double deposit(double amount, String accountNumber, Map<String, BankAccount> bankAccounts) {
+	public double deposit(double amount, BankAccount account) {
 		try {
 			
-			double balance = bankAccountDao.deposit(amount, accountNumber, bankAccounts);
+			double balance = bankAccountDao.deposit(amount, account);
 			 
-			bankAccounts.get(accountNumber).setBalance(balance);
+		    account.setBalance(balance);
 			
 		}catch(IllegalArgumentException e) {
 			System.out.println(e.getMessage());
 		}
 		
-		return bankAccounts.get(accountNumber).getBalance();
+		return account.getBalance();
 	}
 	
 	/**
 	 * method that allows to withdraw an amount of money 
 	 * @param amount
-	 * @param accountNumber
-	 * @param bankAccounts represents all bank accounts
+	 * @param account
 	 **/
-	public double withdraw(double amount, String accountNumber, Map<String, BankAccount> bankAccounts) {
+	public double withdraw(double amount, BankAccount account) {
 	    try {
 			
-			double balance = bankAccountDao.withdraw(amount, accountNumber, bankAccounts);
+			double balance = bankAccountDao.withdraw(amount, account);
 			
-			bankAccounts.get(accountNumber).setBalance(balance);
+			account.setBalance(balance);
 			
 		}catch(IllegalArgumentException e) {
 			System.out.println(e.getMessage());
 		}
-	    return bankAccounts.get(accountNumber).getBalance();
+	    return account.getBalance();
 	} 
 	
 	/**
 	 * method that allows to check the operations of a customer
 	 * @param accountNumber
+	 * @param statements
 	 **/
-	public void checkOperation(String accountNumber) {
+	public void checkOperation(String accountNumber, List<PrintingStatement> statements) {
 		
-		bankAccountDao.checkOperation(accountNumber);
+		bankAccountDao.checkOperation(accountNumber, statements);
 	}
 	
 	/**

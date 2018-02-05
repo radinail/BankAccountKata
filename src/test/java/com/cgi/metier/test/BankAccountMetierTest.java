@@ -46,9 +46,9 @@ public class BankAccountMetierTest {
 	
 		BankAccount account = bankAccounts.get("FR122349"); 
 		
-		Mockito.when(accountDaoMock.deposit(Mockito.anyDouble(), Mockito.anyString(), Mockito.anyMap())).thenReturn(20000.0);
+		Mockito.when(accountDaoMock.deposit(10000, account)).thenReturn(20000.0);
 		
-		accountMetier.deposit(10000, "FR122349", bankAccounts);
+		accountMetier.deposit(10000, account);
 		
 		Assert.assertEquals(20000, account.getBalance(), 0.0);		
 	}
@@ -57,9 +57,10 @@ public class BankAccountMetierTest {
 	public void should_throw_exception_when_amount_is_less_than_or_equal_zero() {
 	
 		try {
-			
-			Mockito.when(accountDaoMock.deposit(Mockito.anyDouble(), Mockito.anyString(), Mockito.anyMap())).thenThrow(new IllegalArgumentException());
-			accountMetier.deposit(-1000, "FR122349", bankAccounts);
+
+			BankAccount account = bankAccounts.get("FR122349"); 
+			Mockito.when(accountDaoMock.deposit(-1000, account)).thenThrow(new IllegalArgumentException());
+			accountMetier.deposit(-1000, account);
 			
 		}catch(IllegalArgumentException e){
 			Assert.assertEquals(e.getMessage(), "The amount must be greater than zero");
@@ -74,8 +75,8 @@ public class BankAccountMetierTest {
 		
 		  BankAccount account = bankAccounts.get("FR001234"); 
 		  
-		  Mockito.when(accountDaoMock.withdraw(Mockito.anyDouble(), Mockito.anyString(), Mockito.anyMap())).thenReturn(500.0);
-		  accountMetier.withdraw(500, "FR001234", bankAccounts);
+		  Mockito.when(accountDaoMock.withdraw(500, account)).thenReturn(500.0);
+		  accountMetier.withdraw(500, account);
 		
 		  Assert.assertEquals(500, account.getBalance(), 0.0); 
 	} 
@@ -83,9 +84,10 @@ public class BankAccountMetierTest {
 	@Test
 	public void should_return_exception_when_amount_is_less_than_or_equal_zero() {
 	  try {
-			
-		  Mockito.when(accountDaoMock.deposit(Mockito.anyDouble(), Mockito.anyString(), Mockito.anyMap())).thenThrow(new IllegalArgumentException());
-		  accountMetier.deposit(-1000, "FR122349", bankAccounts);
+
+		  BankAccount account = bankAccounts.get("FR122349"); 
+		  Mockito.when(accountDaoMock.deposit(-1000, account)).thenThrow(new IllegalArgumentException());
+		  accountMetier.deposit(-1000, account);
 			
 		}catch(IllegalArgumentException e){
 			Assert.assertEquals(e.getMessage(), "The amount must be greater than zero");
@@ -96,9 +98,10 @@ public class BankAccountMetierTest {
 	public void should_throw_exception_when_amount_is_greater_than_balance() {
 		
 		try {
-				
-			Mockito.when(accountDaoMock.deposit(Mockito.anyDouble(), Mockito.anyString(), Mockito.anyMap())).thenThrow(new IllegalArgumentException());
-			accountMetier.deposit(-1000, "FR122349", bankAccounts);
+
+			BankAccount account = bankAccounts.get("FR122349"); 
+			Mockito.when(accountDaoMock.deposit(-1000, account)).thenThrow(new IllegalArgumentException());
+			accountMetier.deposit(-1000, account);
 				
 		}catch(IllegalArgumentException e){
 				Assert.assertEquals(e.getMessage(), "The amount is greater than the balance");

@@ -18,17 +18,7 @@ public class PrintingStatement {
 	
 	/** the account number*/
 	private String accountNumber;
-	
-	/** the constructor*/
-	public PrintingStatement(String operation, Date date, double amount, double balance, String accountNumber) {
-		super();
-		this.operation = operation;
-		this.date = date;
-		this.amount = amount;
-		this.balance = balance;
-		this.accountNumber = accountNumber;
-	}
-	
+		
 	/** get operation
 	 * @return operation 
 	 **/

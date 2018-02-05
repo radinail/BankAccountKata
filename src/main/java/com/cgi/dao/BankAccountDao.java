@@ -12,25 +12,24 @@ public interface BankAccountDao {
 	/**
 	 * method that allows  to make a deposit of money 
 	 * @param amount
-	 * @param accountNumber
-	 * @param bankAccounts represents all bank accounts
+	 * @param account
 	 **/
-	public double deposit(double amount, String accountNumber, Map<String, BankAccount> bankAccounts);
+	public double deposit(double amount, BankAccount account);
 	
 	/**
 	 * method that allows to withdraw an amount of money 
 	 * @param amount
-	 * @param accountNumber
-	 * @param bankAccounts represents all bank accounts
+	 * @param account
 	 **/
-	public double withdraw(double amount, String accountNumber, Map<String, BankAccount> bankAccounts);
+	public double withdraw(double amount, BankAccount account);
 	
 
 	/**
 	 * method that allows to check the operations of a customer
 	 * @param accountNumber
+	 * @param account
 	 **/
-	public void checkOperation(String accountNumber);
+	public void checkOperation(String accountNumber, List<PrintingStatement> statements);
 
 
 

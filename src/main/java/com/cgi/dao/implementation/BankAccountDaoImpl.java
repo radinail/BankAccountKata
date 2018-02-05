@@ -13,54 +13,46 @@ import com.cgi.model.PrintingStatement;
 
 public class BankAccountDaoImpl implements BankAccountDao  {
 	
-	private List<PrintingStatement> statements = new ArrayList<PrintingStatement>();
 	/**
 	 * method that allows  to make a deposit of money 
 	 * @param amount
-	 * @param accountNumber
-	 * @param bankAccounts represents all bank accounts
+	 * @param account
 	 **/
-	public double deposit(double amount, String accountNumber, Map<String, BankAccount> bankAccounts) {
+	public double deposit(double amount, BankAccount account) {
 		
 		if(amount <= 0) {
 			throw new IllegalArgumentException("The amount must be greater than zero");
 		
 		}else {
-			for(BankAccount account : bankAccounts.values()) {
-				if(account.getAccountNumber().equals(accountNumber)) {
-					account.setBalance(account.getBalance() + amount);	
-				    recordOperation(accountNumber, "Deposit", new Date(), amount, account.getBalance(), statements);
-				    	
-				} 
-			}
+			
+			account.setBalance(account.getBalance() + amount);	
+			recordOperation(account.getAccountNumber(), "Deposit", new Date(), amount, account.getBalance());			
 		}
 		
-		return bankAccounts.get(accountNumber).getBalance();
+		return account.getBalance();
 	}
 	
 	/**
 	 * method that allows to withdraw an amount of money  
 	 * @param amount
-	 * @param accountNumber
-	 * @param bankAccounts represents all bank accounts
+	 * @param account
 	 **/
-	public double withdraw(double amount, String accountNumber, Map<String, BankAccount> bankAccounts) {
+	public double withdraw(double amount, BankAccount account) {
 		if(amount <= 0) {
 			throw new IllegalArgumentException("The amount must be greater than zero");
 		
 		}else {
-			for(BankAccount account : bankAccounts.values()) {
+	
+			if(amount > account.getBalance()) 
+				throw new IllegalArgumentException("The amount is greater than the balance");
 				
-				if(account.getAccountNumber().equals(accountNumber) && amount > account.getBalance()) 
-					throw new IllegalArgumentException("The amount is greater than the balance");
-				
-				if(account.getAccountNumber().equals(accountNumber) && amount <= account.getBalance()) {
-					account.setBalance(account.getBalance() - amount);
-					recordOperation(accountNumber, "Withdraw", new Date(), amount, account.getBalance(), statements);
-				}
+			if(amount <= account.getBalance()) {
+				account.setBalance(account.getBalance() - amount);
+				recordOperation(account.getAccountNumber(), "Withdraw", new Date(), amount, account.getBalance());
 			}
+			
 		}
-		return bankAccounts.get(accountNumber).getBalance();
+		return account.getBalance();
 	}
 	
 	/**
@@ -72,17 +64,23 @@ public class BankAccountDaoImpl implements BankAccountDao  {
 	 * @param balance
 	 * @param statements
 	 **/
-	private void recordOperation(String accountNumber, String operation, Date date, double amount, double balance, List<PrintingStatement> statements) {
+	private void recordOperation(String accountNumber, String operation, Date date, double amount, double balance) {
 		
 		
-		statements.add(new PrintingStatement(operation, date, amount, balance, accountNumber));		
+		PrintingStatement statement = new PrintingStatement();	
+		statement.setAccountNumber(accountNumber);
+		statement.setAmount(amount);
+		statement.setBalance(balance);
+		statement.setDate(date);
+		statement.setOperation(operation);
 	}
 	
 	/**
 	 * method that allows to check the operations of a customer
 	 * @param accountNumber
+	 * @param statements
 	 **/
-	public void checkOperation(String accountNumber) {
+	public void checkOperation(String accountNumber, List<PrintingStatement> statements) {
 		
 		for (int i = 0; i < statements.size(); i++) {
 	        if (statements.get(i).getAccountNumber().equals(accountNumber)) {
